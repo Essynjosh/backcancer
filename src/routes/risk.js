@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth'); // <--- CRITICAL: Import protect middleware
 const { evaluateRisk } = require('../utils/riskEngine');
-const RiskCheck = require('../models/RiskCheck'); // Import the Sequelize Model
+const RiskCheck = require('../models/Riskcheck'); // Import the Sequelize Model
 
 /**
  * @route POST /api/risk-check

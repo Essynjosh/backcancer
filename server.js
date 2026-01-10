@@ -6,7 +6,7 @@ const { connectDB, sequelize } = require("./src/config/database");
 
 // --- 2. Load Models (MUST be loaded before sequelize.sync()) ---
 // These files define models using the SAME sequelize instance
-require("./src/models/RiskCheck");
+require("./src/models/Riskcheck");
 require("./src/models/Clinic");
 require("./src/models/User");
 

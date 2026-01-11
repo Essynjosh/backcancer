@@ -21,17 +21,29 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // --- 5. Apply CORS Middleware ---
-// Includes all variations of your Vercel URLs to prevent the "Failed to fetch" error
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://frontcancer-ru1a-m8pu0v6sj-essynjosh353-gmailcoms-projects.vercel.app",
-  "https://frontcancer-ru1a-plvxrbqy4-essynjosh353-gmailcoms-projects.vercel.app",
-  "https://frontcancer-ru1a-ngqs918is-essynjosh353-gmailcoms-projects.vercel.app"
+  "https://frontcancer-ru1a.vercel.app" // Your main production URL
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+
+    // Allow if origin is in the list OR matches a Vercel preview subdomain
+    const isAllowed = allowedOrigins.includes(origin) || /frontcancer-ru1a.*\.vercel\.app$/.test(origin);
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.log("CORS blocked for origin:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 // --- Middleware ---

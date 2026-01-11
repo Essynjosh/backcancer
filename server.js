@@ -1,11 +1,11 @@
 const express = require("express");
+const cors = require("cors"); // 1. Import the cors package
 require("dotenv").config();
 
 // --- 1. Load Database Connector ---
 const { connectDB, sequelize } = require("./src/config/database");
 
-// --- 2. Load Models (MUST be loaded before sequelize.sync()) ---
-// These files define models using the SAME sequelize instance
+// --- 2. Load Models ---
 require("./src/models/RiskCheck");
 require("./src/models/Clinic");
 require("./src/models/User");
@@ -19,6 +19,18 @@ const adminClinicRoutes = require("./src/routes/adminClinic");
 // --- 4. Initialize Express App ---
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// --- 5. Apply CORS Middleware ---
+// This tells the server to allow requests from your specific Vercel frontend URL
+const allowedOrigins = [
+  "http://localhost:5173", // Allows local testing
+  "https://frontcancer-ru1a-m8pu0v6sj-essynjosh353-gmailcoms-projects.vercel.app" // Your live frontend URL
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 // --- Middleware ---
 app.use(express.json());
@@ -37,12 +49,12 @@ app.get("/", (req, res) => {
   });
 });
 
-// --- 5. Start Server ---
+// --- Start Server ---
 const startServer = async () => {
   console.log("🔌 Connecting to Neon database...");
 
   try {
-    await connectDB(); // Connects to Neon + syncs models
+    await connectDB(); 
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);

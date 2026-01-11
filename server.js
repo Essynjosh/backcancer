@@ -5,7 +5,7 @@ require("dotenv").config();
 // --- 1. Load Database Connector ---
 const { connectDB, sequelize } = require("./src/config/database");
 
-// --- 2. Load Models (MUST be loaded before sequelize.sync()) ---
+// --- 2. Load Models ---
 require("./src/models/Riskcheck");
 require("./src/models/Clinic");
 require("./src/models/User");
@@ -21,9 +21,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // --- 5. Apply CORS Middleware ---
+// Includes all variations of your Vercel URLs to prevent the "Failed to fetch" error
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://frontcancer-ru1a-m8pu0v6sj-essynjosh353-gmailcoms-projects.vercel.app"
+  "https://frontcancer-ru1a-m8pu0v6sj-essynjosh353-gmailcoms-projects.vercel.app",
+  "https://frontcancer-ru1a-plvxrbqy4-essynjosh353-gmailcoms-projects.vercel.app",
+  "https://frontcancer-ru1a-ngqs918is-essynjosh353-gmailcoms-projects.vercel.app"
 ];
 
 app.use(cors({
@@ -51,10 +54,8 @@ app.get("/", (req, res) => {
 // --- Start Server ---
 const startServer = async () => {
   console.log("🔌 Connecting to Neon database...");
-
   try {
     await connectDB();
-
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });

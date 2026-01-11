@@ -5,8 +5,14 @@ require("dotenv").config();
 // --- 1. Load Database Connector ---
 const { connectDB, sequelize } = require("./src/config/database");
 
+<<<<<<< HEAD
 // --- 2. Load Models ---
 require("./src/models/RiskCheck");
+=======
+// --- 2. Load Models (MUST be loaded before sequelize.sync()) ---
+// These files define models using the SAME sequelize instance
+require("./src/models/Riskcheck");
+>>>>>>> 9c476b4fe67b2ecd4894780074643c929efbe8bf
 require("./src/models/Clinic");
 require("./src/models/User");
 
